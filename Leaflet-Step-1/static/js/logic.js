@@ -107,10 +107,10 @@ function StartMapping() {
     
             onEachFeature: function (feature, layer) {
                 layer.bindPopup(
-                    "<h4 style='text-align:center;'>Date: " + new Date(feature.properties.time) +
-                    "</h4><hr><h5 style='text-align:center;'>Type: " + feature.properties.type + "</h5>" +
-                    "</h4><h5 style='text-align:center;'>Magnitude:" + feature.properties.mag + "</h5>" +
-                    "</h4><h5 style='text-align:center;'>" + feature.properties.title + "</h5>");
+                    "<h4 style='text-align:center;'>Magnitude: " + feature.properties.mag + "</h4>" +
+                    "<hr><h4 style='text-align:center;'>Lat: " + feature.geometry.coordinates[0] + "</h4>" +
+                    "<hr><h4 style='text-align:center;'>Long: " + feature.geometry.coordinates[1] + "</h4>" +
+                    "<hr><h4 style='text-align:center;'>Depth: " + feature.geometry.coordinates[2] + "</h4>");
             }
         }).addTo(earthquake);
         createMap(earthquake);
