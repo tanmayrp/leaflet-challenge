@@ -30,7 +30,6 @@ function setColor(depth) {
 
 var earthquake = new L.LayerGroup();
 
-// define the create map function
 function createMap() {
     var satellite = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
         attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
@@ -92,7 +91,6 @@ function createMap() {
 
 function StartMapping() {
     d3.json(url_past7Days_AllEarthquakes).then(function(geoJson) {
-        console.log(url_past7Days_AllEarthquakes);
         L.geoJSON(geoJson.features, {
             pointToLayer: function (geoJsonPoint, latlng) {
                 return L.circleMarker(latlng, { radius: setMarkerSize(geoJsonPoint.properties.mag) });
@@ -100,18 +98,19 @@ function StartMapping() {
     
             style: function (geoJsonFeature) {
                 return {
-                    fillColor: setColor(geoJsonFeature.geometry.coordinates[2]),
+                    fillColor: setColor(geoJsonFeature.geometry.coordinates[2]),//depth
                     fillOpacity: 0.7,
                     weight: 0.1,
                     color: 'black'
-    
                 }
             },
     
             onEachFeature: function (feature, layer) {
                 layer.bindPopup(
-                    "<h4 style='text-align:center;'>" + new Date(feature.properties.time) +
-                    "</h4> <hr> <h5 style='text-align:center;'>" + feature.properties.title + "</h5>");
+                    "<h4 style='text-align:center;'>Date: " + new Date(feature.properties.time) +
+                    "</h4><hr><h5 style='text-align:center;'>Type: " + feature.properties.type + "</h5>" +
+                    "</h4><h5 style='text-align:center;'>Magnitude:" + feature.properties.mag + "</h5>" +
+                    "</h4><h5 style='text-align:center;'>" + feature.properties.title + "</h5>");
             }
         }).addTo(earthquake);
         createMap(earthquake);
