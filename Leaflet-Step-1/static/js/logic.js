@@ -1,9 +1,6 @@
-// URL to retrieve data
-var url_past7Days_AllEarthquakes = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
-
 //HELPER FUNCTIONS
 function setMarkerSize(magnitude) {
-    return magnitude*3;
+    return magnitude * 3;
 };
 
 function setColor(depth) {
@@ -72,7 +69,9 @@ function createMap() {
 
     L.control.layers(baseLayers, overlays,{collapsed:false}).addTo(mymap);
  
-    var legend = L.control({ position: 'bottomright' });
+    var legend = L.control({ 
+        position: 'bottomright' 
+    });
 
     legend.onAdd = function(map) {
         var div = L.DomUtil.create("div", "legend");
@@ -90,12 +89,15 @@ function createMap() {
 }
 
 function StartMapping() {
+    
+    // URL to retrieve data
+    var url_past7Days_AllEarthquakes = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+
     d3.json(url_past7Days_AllEarthquakes).then(function(geoJson) {
         L.geoJSON(geoJson.features, {
             pointToLayer: function (geoJsonPoint, latlng) {
                 return L.circleMarker(latlng, { radius: setMarkerSize(geoJsonPoint.properties.mag) });
             },
-    
             style: function (geoJsonFeature) {
                 return {
                     fillColor: setColor(geoJsonFeature.geometry.coordinates[2]),//depth
@@ -104,7 +106,6 @@ function StartMapping() {
                     color: 'black'
                 }
             },
-    
             onEachFeature: function (feature, layer) {
                 layer.bindPopup(
                     "<h4 style='text-align:center;'>Magnitude: " + feature.properties.mag + "</h4>" +
